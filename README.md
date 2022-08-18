@@ -28,3 +28,7 @@ This can be useful for checking if your changes are breaking or introducing a fl
 
 Follow the instructions provided in the [GitHub Docs](
 https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork#syncing-a-fork-branch-from-the-web-ui) to sync the fork.
+
+
+## Issues and Questions
+If you have any issues or questions, please file an issue on the [GitHub repository](https://github.com/gp201/frontend-tests-flake-check-oppia/issues)
