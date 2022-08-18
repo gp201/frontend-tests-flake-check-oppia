@@ -3,9 +3,8 @@
 This is an action that allows you to bulk run (50 times) the frontend tests for a specific PR made to [Oppia](https://github.com/oppia/oppia).
 This can be useful for checking if your changes are breaking or introducing a flake in the frontend tests.
 
-The staus badge (Frontend tests health) for the health of the frontend test for the latest develop branch is displayed above.
-
 > **Note**  
+> The staus badge (Frontend tests health) for the health of the frontend test for the latest develop branch is displayed above.
 > Every week the health of the frontend tests for the latest develop branch are updated. 
 
 
