@@ -10,6 +10,10 @@ This can be useful for checking if your changes are breaking or introducing a fl
 
 ## How to run bulk run the frontend tests
 
+> **Note**  
+> If you prefer images you can refer to the [GitHub Docs](https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow#running-a-workflow)
+
+
 1. Fork the repository
 2. Go to the actions tab and click the `Frontend tests flake check` action.
 3. Click the `Run worlfow` button. A dialog will open asking the following inputs.
