@@ -1,0 +1,112 @@
+name: Frontend tests flake check
+on:
+  workflow_dispatch:
+    inputs:
+      flags:
+        description: 'Flags'     
+        required: true
+        default: '--run_minified_tests --skip_install --check_coverage --verbose'
+      checkout:
+        description: 'Run frontend tests for a specific PR'
+        required: false
+        default: 'develop'
+      reason:
+        description: 'Reason'
+        required: false
+        default: 'Manual trigger for frontend tests'
+      coverage-report:
+        type: boolean
+        description: 'Store karma coverage report as an artifact'
+        default: true
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  generate_summary:
+    runs-on: [ubuntu-22.04]
+    steps:
+      - uses: actions/checkout@master
+        with:
+          repository: oppia/oppia
+      - name: Merge with develop
+        run: |
+          git fetch --unshallow
+          gh pr checkout ${{ github.event.inputs.checkout }}
+          git config --global user.email "mergeAction@example.com"
+          git config --global user.name "Oppia Merge Base Branch GitHub Action"
+          git merge develop --squash
+      - name: Diagnostic Checks
+        run: |
+          echo "Current branch:"
+          git branch
+          echo "List of changed files in PR:"
+          git diff --name-status --stat --color develop
+      - name: Generate list using Markdown
+        run: |
+          echo "# Job summary - ${{ github.event.inputs.reason }} | PR: #${{ github.event.inputs.checkout }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          date >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          git log --oneline -n 3 >> $GITHUB_STEP_SUMMARY
+  frontend:
+    needs: generate_summary
+    runs-on:  ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-22.04]
+        id: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          repository: oppia/oppia
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+          architecture: 'x64'
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: /home/runner/work/$GITHUB_REPOSITORY/yarn_cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+      - uses: ./.github/actions/install-oppia-dependencies
+      - name: Suppress ENOSPC error from chokidar file watcher. See https://stackoverflow.com/a/32600959.
+        run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+      - name: Merge with develop
+        run: |
+          git fetch --unshallow
+          gh pr checkout ${{ github.event.inputs.checkout }}
+          git config --global user.email "mergeAction@example.com"
+          git config --global user.name "Oppia Merge Base Branch GitHub Action"
+          git merge develop --squash
+      - name: Diagnostic Checks
+        run: |
+          echo "Current branch:"
+          git branch
+          echo "List of changed files in PR:"
+          git diff --name-status --stat --color develop
+      - name: Run frontend tests ${{ matrix.id }}
+        run: |
+          PYTHONIOENCODING=utf-8 python -m scripts.run_frontend_tests ${{ github.event.inputs.flags }}
+      - name: Uploading fronted coverage reports as an artifact
+        if: ${{ failure() && github.event.inputs.coverage-report }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: frontend-coverage-${{ matrix.id }}
+          path: /home/runner/work/oppia/karma_coverage_reports
+      - name: Generate Markdown file
+        if: ${{ failure() }}
+        run: |
+          echo "## RUN ID: ${{ matrix.id }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          date >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          git log --oneline -n 3 > $GITHUB_STEP_SUMMARY
