@@ -23,12 +23,12 @@ This can be useful for checking if your changes are breaking or introducing a fl
     - `Store karma coverage report as an artifact` (Optional): Whether to store the karma coverage report as an artifact.
 4. Click the `Run worlfow` button (Green in color).
 5. The frontend tests will be run for the given PR number. It will take approximately 30 minutes to run the tests.
+6. You can check for existing flakes at [Oppia/Oppia/#15412](https://github.com/oppia/oppia/issues/)
 
 ## How to sync the fork.
 
 Follow the instructions provided in the [GitHub Docs](
 https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/syncing-a-fork#syncing-a-fork-branch-from-the-web-ui) to sync the fork.
 
-
 ## Issues and Questions
-If you have any issues or questions, please file an issue on the [GitHub repository](https://github.com/gp201/frontend-tests-flake-check-oppia/issues)
+If you have any issues or questions, please create a discussion on the [GitHub repository](https://github.com/gp201/frontend-tests-flake-check-oppia/discussions)
