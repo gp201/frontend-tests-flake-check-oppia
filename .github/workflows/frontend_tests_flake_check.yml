@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: frontend-coverage-${{ matrix.id }}
-          path: /home/runner/work/oppia/karma_coverage_reports
+          path: /home/runner/work/frontend-tests-flake-check-oppia/karma_coverage_reports
       - name: Generate Markdown file
         if: ${{ failure() }}
         run: |
