@@ -18,12 +18,12 @@ This can be useful for checking if your changes are breaking or introducing a fl
 2. Go to the actions tab and click the `Frontend tests flake check` action.
 3. Click the `Run worlfow` button. A dialog will open asking the following inputs.
     - `Flags` (Optional): The flags to be passed to the frontend tests. Default is `--run_minified_tests --skip_install --check_coverage --verbose`.
-    - `Run frontend tests for a specific PR` (Required): The PR number to run the frontend tests for.
+    - `Run frontend tests for a specific PR` (**Required**): The PR number to run the frontend tests for.
     - `Reason` (Optional): The reason for running the frontend tests.
     - `Store karma coverage report as an artifact` (Optional): Whether to store the karma coverage report as an artifact.
 4. Click the `Run worlfow` button (Green in color).
 5. The frontend tests will be run for the given PR number. It will take approximately 30 minutes to run the tests.
-6. You can check for existing flakes at [Oppia/Oppia/#15412](https://github.com/oppia/oppia/issues/)
+6. You can check for existing flakes at [Oppia](https://github.com/orgs/oppia/projects/35/views/2).
 
 ## How to sync the fork.
 
