@@ -64,7 +64,7 @@ jobs:
           repository: oppia/oppia
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8.12'
+          python-version: '3.8.15'
           architecture: 'x64'
       - name: Cache node modules
         uses: actions/cache@v2
