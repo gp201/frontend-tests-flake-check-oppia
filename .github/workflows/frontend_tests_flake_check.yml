@@ -1,4 +1,4 @@
-name: Frontend tests flake check
+run-name: Frontend tests flake check ${{ github.event.inputs.checkout }}
 on:
   workflow_dispatch:
     inputs:
