@@ -18,6 +18,10 @@ on:
         type: boolean
         description: 'Store karma coverage report as an artifact'
         default: true
+      sync-develop:
+        type: boolean
+        description: 'Sync with Oppia/Oppia repo develop branch'
+        default: true
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -80,10 +84,13 @@ jobs:
       - uses: ./.github/actions/install-oppia-dependencies
       - name: Suppress ENOSPC error from chokidar file watcher. See https://stackoverflow.com/a/32600959.
         run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-      - name: Merge with develop
+      - name: Checkout PR
         run: |
           git fetch --unshallow
           gh pr checkout ${{ github.event.inputs.checkout }}
+      - name: Merge with develop
+        if: ${{ github.event.inputs.sync-develop }}
+        run: |
           git config --global user.email "mergeAction@example.com"
           git config --global user.name "Oppia Merge Base Branch GitHub Action"
           git merge develop --squash
