@@ -14,6 +14,10 @@ on:
         description: 'Reason'
         required: false
         default: 'Manual trigger for frontend tests'
+      num-runs:
+        type: number
+        description: 'Number of runs to do'
+        required: true
       coverage-report:
         type: boolean
         description: 'Store karma coverage report as an artifact'
@@ -53,13 +57,18 @@ jobs:
           date >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
           git log --oneline -n 3 >> $GITHUB_STEP_SUMMARY
+      - name: Generate job strategy matrix
+        id: generate
+        run: |
+          JOB_STRATEGY_MATRIX=$(node -e "let r=[]; for(let i = 1; i <= ${{ github.event.inputs.num-runs }}; i++) { r.push(i) }; console.log(JSON.stringify(r));")
+          echo "job-strategy-matrix=$JOB_STRATEGY_MATRIX" >> $GITHUB_OUTPUT
   frontend:
     needs: generate_summary
     runs-on:  ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-22.04]
-        id: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
+        id: ${{ fromJson(needs.generate_summary.job-strategy-matrix) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
