@@ -18,6 +18,7 @@ on:
         type: number
         description: 'Number of runs to do'
         required: true
+        default: 50
       coverage-report:
         type: boolean
         description: 'Store karma coverage report as an artifact'
