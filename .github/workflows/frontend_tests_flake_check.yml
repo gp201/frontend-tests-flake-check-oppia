@@ -68,7 +68,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-22.04]
-        id: ${{ fromJson(needs.generate_summary.job-strategy-matrix) }}
+        id: ${{ fromJson(needs.generate_summary.outputs.job-strategy-matrix) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
